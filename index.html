@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Frag Elizabeth · KI-Assistent</title>
 <meta name="description" content="Fragen Sie meinen KI-Assistenten zu meiner Erfahrung als Business Analystin und Product Owner.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 /* Gleiche Optik wie das Portfolio: warmes Weiss, Serif-Titel, Lila als Akzent */
 :root{
@@ -61,13 +59,15 @@ h1 em{color:var(--accent)}
 .ask button{border:0;cursor:pointer;background:var(--accent);color:#fff;border-radius:999px;padding:10px 18px;font-weight:600;font-size:15px}
 .ask button:disabled{opacity:.5;cursor:default}
 .note{max-width:780px;margin:8px auto 0;font-size:12.5px;color:var(--muted);text-align:center}
+#legal{margin-top:4px}
+#legal a{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.typing span{animation:none}}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="in">
-    <a class="back" id="back" href="https://claude.ai/artifact/HfF94WXueYMea749v9METS">← Portfolio</a>
+    <a class="back" id="back" href="https://elizacasas.de/">← Portfolio</a>
     <div class="lang" role="group" aria-label="Sprache / Language / Idioma">
       <button type="button" data-l="de" aria-pressed="true">DE</button><button type="button" data-l="en" aria-pressed="false">EN</button><button type="button" data-l="es" aria-pressed="false">ES</button>
     </div>
@@ -91,6 +91,7 @@ h1 em{color:var(--accent)}
     <button id="send" type="submit"></button>
   </form>
   <p class="note" id="note"></p>
+  <p class="note" id="legal"></p>
 </div>
 
 <script>
@@ -98,11 +99,11 @@ h1 em{color:var(--accent)}
 const API_URL = "https://frag-elizabeth.frag-elizabeth-worker.workers.dev";
 
 const T = {
-  de:{eyebrow:"KI-Assistent · RAG", lead:"Fragen Sie meinen KI-Assistenten zu meiner Erfahrung, meinen Kenntnissen und meiner Verfügbarkeit. Er antwortet auf Basis meines Lebenslaufs.", hello:"Hallo! Ich bin der KI-Assistent von Elizabeth. Was möchten Sie über sie wissen?", ph:"Ihre Frage …", send:"Fragen", note:"KI kann Fehler machen. Für Verbindliches: elizacasas@hotmail.com", who:"Frag Elizabeth", src:"Quellen", label:"Ihre Frage an den KI-Assistenten", back:"← Portfolio", offline:"Der Assistent wird gerade eingerichtet. Schreiben Sie Elizabeth gern direkt: elizacasas@hotmail.com", net:"Keine Verbindung. Bitte versuchen Sie es gleich noch einmal.",
+  de:{legal:"Ihre Frage wird an Cloudflare (USA) übertragen, um die Antwort zu erzeugen. Bitte keine persönlichen Daten eingeben. · <a href=\"datenschutz.html\">Datenschutz</a> · <a href=\"https://elizacasas.de/impressum.html\">Impressum</a>", eyebrow:"KI-Assistent · RAG", lead:"Fragen Sie meinen KI-Assistenten zu meiner Erfahrung, meinen Kenntnissen und meiner Verfügbarkeit. Er antwortet auf Basis meines Lebenslaufs.", hello:"Hallo! Ich bin der KI-Assistent von Elizabeth. Was möchten Sie über sie wissen?", ph:"Ihre Frage …", send:"Fragen", note:"KI kann Fehler machen. Für Verbindliches: elizacasas@hotmail.com", who:"Frag Elizabeth", src:"Quellen", label:"Ihre Frage an den KI-Assistenten", back:"← Portfolio", offline:"Der Assistent wird gerade eingerichtet. Schreiben Sie Elizabeth gern direkt: elizacasas@hotmail.com", net:"Keine Verbindung. Bitte versuchen Sie es gleich noch einmal.",
       chips:["Ab wann ist sie verfügbar?","Was ist Salva Patitas?"]},
-  en:{eyebrow:"AI assistant · RAG", lead:"Ask my AI assistant about my experience, skills and availability. It answers based on my CV.", hello:"Hi! I'm Elizabeth's AI assistant. What would you like to know about her?", ph:"Your question …", send:"Ask", note:"AI can make mistakes. For anything binding: elizacasas@hotmail.com", who:"Frag Elizabeth", src:"Sources", label:"Your question for the AI assistant", back:"← Portfolio", offline:"The assistant is being set up. Feel free to write to Elizabeth directly: elizacasas@hotmail.com", net:"No connection. Please try again in a moment.",
+  en:{legal:"Your question is sent to Cloudflare (USA) to generate the answer. Please do not enter personal data. · <a href=\"datenschutz.html\">Privacy</a> (German) · <a href=\"https://elizacasas.de/impressum.html\">Legal notice</a>", eyebrow:"AI assistant · RAG", lead:"Ask my AI assistant about my experience, skills and availability. It answers based on my CV.", hello:"Hi! I'm Elizabeth's AI assistant. What would you like to know about her?", ph:"Your question …", send:"Ask", note:"AI can make mistakes. For anything binding: elizacasas@hotmail.com", who:"Frag Elizabeth", src:"Sources", label:"Your question for the AI assistant", back:"← Portfolio", offline:"The assistant is being set up. Feel free to write to Elizabeth directly: elizacasas@hotmail.com", net:"No connection. Please try again in a moment.",
       chips:["When can she start?","What is Salva Patitas?"]},
-  es:{eyebrow:"Asistente de IA · RAG", lead:"Pregunte a mi asistente de IA sobre mi experiencia, mis conocimientos y mi disponibilidad. Responde a partir de mi CV.", hello:"¡Hola! Soy el asistente de IA de Elizabeth. ¿Qué le gustaría saber sobre ella?", ph:"Su pregunta …", send:"Preguntar", note:"La IA puede equivocarse. Para algo vinculante: elizacasas@hotmail.com", who:"Frag Elizabeth", src:"Fuentes", label:"Su pregunta para el asistente de IA", back:"← Portafolio", offline:"El asistente se está configurando. Puede escribir a Elizabeth directamente: elizacasas@hotmail.com", net:"Sin conexión. Por favor, inténtelo de nuevo en un momento.",
+  es:{legal:"Su pregunta se envía a Cloudflare (EE. UU.) para generar la respuesta. Por favor, no escriba datos personales. · <a href=\"datenschutz.html\">Privacidad</a> (en alemán) · <a href=\"https://elizacasas.de/impressum.html\">Aviso legal</a>", eyebrow:"Asistente de IA · RAG", lead:"Pregunte a mi asistente de IA sobre mi experiencia, mis conocimientos y mi disponibilidad. Responde a partir de mi CV.", hello:"¡Hola! Soy el asistente de IA de Elizabeth. ¿Qué le gustaría saber sobre ella?", ph:"Su pregunta …", send:"Preguntar", note:"La IA puede equivocarse. Para algo vinculante: elizacasas@hotmail.com", who:"Frag Elizabeth", src:"Fuentes", label:"Su pregunta para el asistente de IA", back:"← Portafolio", offline:"El asistente se está configurando. Puede escribir a Elizabeth directamente: elizacasas@hotmail.com", net:"Sin conexión. Por favor, inténtelo de nuevo en un momento.",
       chips:["¿Desde cuándo está disponible?","¿Qué es Salva Patitas?"]},
 };
 const $ = id => document.getElementById(id);
@@ -127,7 +128,7 @@ function setLang(l){
   document.documentElement.lang = l;
   $("eyebrow").textContent = t.eyebrow; $("lead").textContent = t.lead;
   $("q").placeholder = t.ph; $("qlabel").textContent = t.label; $("send").textContent = t.send;
-  $("note").textContent = t.note; $("back").textContent = t.back;
+  $("note").textContent = t.note; $("legal").innerHTML = t.legal; $("back").textContent = t.back;
   document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.l === l)));
   if (!$("log").querySelector(".me")){ $("log").innerHTML = ""; bubble(t.hello, false); }
   chips();
